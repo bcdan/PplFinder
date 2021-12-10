@@ -51,11 +51,12 @@ const UserList = ({ users, isLoading }) => {
   };
 
   const getCountryTag = (countryLabel)=>{
-    return COUNTRIES.find((countryOBJ)=>{
-        if(countryOBJ.label == countryLabel)
+    const foundCountry = COUNTRIES.find((countryOBJ)=>{
+        if(countryOBJ.label == countryLabel){
           return countryOBJ.nat;
+        }
     });
-    
+    return foundCountry?.nat;
   }
 
   const isChecked = (country)=>{

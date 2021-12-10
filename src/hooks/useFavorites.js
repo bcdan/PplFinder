@@ -1,17 +1,15 @@
 import { useState, useEffect } from "react";
 
 export const useFavorites = () => {
-  const [favoriteUsers,setFavoriteUsers] = useState([]); 
-
-  //save favorite users on localStorage
-  useEffect(()=>{
+  const [favoriteUsers,setFavoriteUsers] = useState(()=>{
     const favoriteUsersFromLocalStorage = window.localStorage.getItem("favorites");
-    let favoriteUsersList = [];
-    if(favoriteUsersFromLocalStorage && favoriteUsers){
+    let favoriteUsersList = '[]';
+    if(favoriteUsersFromLocalStorage ){
       favoriteUsersList = favoriteUsersFromLocalStorage;
     }
-    setFavoriteUsers(JSON.parse(favoriteUsersList));
-  },[]);
+    return JSON.parse(favoriteUsersList);
+  });
+
 
   useEffect(()=>{
     window.localStorage.setItem("favorites",JSON.stringify(favoriteUsers));
