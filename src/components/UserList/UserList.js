@@ -11,12 +11,17 @@ import {useLocation} from 'react-router-dom'
 const UserList = ({ users, isLoading }) => {
   const [hoveredUserId, setHoveredUserId] = useState();
   const [checkedBoxes,setCheckedBoxes] = useState([]);
-  const [filteredUsers,setFilteredUsers] = useState(users); // we don't wanna mutate the original users prop
+  const [filteredUsers,setFilteredUsers] = useState(users);
   const { favoriteUsers , setFavoriteUsers } = useFavorites();
   const location = useLocation();
 
-  const COUNTRY_TAGS = ["BR","AU","CA","DE","NO"];
-  const COUNTRY_LABELS = ["Brazil", "Australia" , "Canada" , "Germany" , "Norway"];
+  const COUNTRIES = [
+    {nat:"BR",label:"Brazil"},
+    {nat:"AU",label:"Australia"},
+    {nat:"CA",label:"Canada"},
+    {nat:"DE",label:"Germany"},
+    {nat:"NO",label:"Norway"}
+  ]
 
   const handleMouseEnter = (index) => {
     setHoveredUserId(index);
@@ -28,7 +33,7 @@ const UserList = ({ users, isLoading }) => {
 
   useEffect(()=>{
     //generate unique IDs for all users
-    users.forEach((user)=>user["_id"]=(new Date()).getTime().toString(36) + Math.random().toString(36).slice(2)); //each user object will have a unique id
+    users.forEach((user)=>user["_id"]=(new Date()).getTime().toString(36) + Math.random().toString(36).slice(2));
     setFilteredUsers(users);
   },[users]);
 
@@ -37,17 +42,24 @@ const UserList = ({ users, isLoading }) => {
       const newCheckedBoxes = [...checkedBoxes];
       currentIndex === -1 ? newCheckedBoxes.push(countryValue) : newCheckedBoxes.splice(currentIndex,1);
       setCheckedBoxes(newCheckedBoxes);
-      if(newCheckedBoxes.length == 0){ // if there are no checked boxes - show all users
+      if(newCheckedBoxes.length == 0){
           setFilteredUsers(users);
           return;
       }
-      const filteredResult = users.filter(user=>newCheckedBoxes.some(checkBox=>user.nat == checkBox)); //TODO : change to country instead of nationality
+      const filteredResult = users.filter(user=>newCheckedBoxes.some(checkBox=>getCountryTag(user.location.country) == checkBox));
       setFilteredUsers(filteredResult);
-
   };
 
+  const getCountryTag = (countryLabel)=>{
+    return COUNTRIES.find((countryOBJ)=>{
+        if(countryOBJ.label == countryLabel)
+          return countryOBJ.nat;
+    });
+    
+  }
+
   const isChecked = (country)=>{
-      return checkedBoxes.indexOf(country) === -1 ? false:true; // if the index is -1 then the box is not checked
+      return checkedBoxes.indexOf(country) > -1;
   };
 
 
@@ -70,14 +82,14 @@ const UserList = ({ users, isLoading }) => {
     <S.UserList>
       {location.pathname === '/' ? 
       <S.Filters>
-        {COUNTRY_TAGS.map((tag,index)=>{
+        {COUNTRIES.map((country,index)=>{
           return (
           <CheckBox 
             key={index} 
-            isChecked={isChecked(tag)} 
+            isChecked={isChecked(country.nat)} 
             onChange={handleToggle} 
-            value={tag} 
-            label={COUNTRY_LABELS[index]} />
+            value={country.nat} 
+            label={country.label} />
           );
         })}
       </S.Filters>
