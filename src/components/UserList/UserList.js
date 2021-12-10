@@ -46,7 +46,6 @@ const UserList = ({ users, isLoading }) => {
 
   };
 
-  
   const isChecked = (country)=>{
       return checkedBoxes.indexOf(country) === -1 ? false:true; // if the index is -1 then the box is not checked
   };
@@ -59,11 +58,17 @@ const UserList = ({ users, isLoading }) => {
     setFavoriteUsers(newFavorites);
   };
 
+  const handleFavoriteVisibility = (userID)=>{
+    if(!favoriteUsers)
+      setFavoriteUsers([]);
+    return favoriteUsers?.some(favorite=>favorite._id == userID);
+  }
+
 
 
   return (
     <S.UserList>
-      {location.pathname==='/' ? 
+      {location.pathname === '/' ? 
       <S.Filters>
         {COUNTRY_TAGS.map((tag,index)=>{
           return (
@@ -79,7 +84,7 @@ const UserList = ({ users, isLoading }) => {
       : null
       }
       <S.List >
-        {(location.pathname === '/' ? filteredUsers : favoriteUsers).map((user, index) => {
+        {(location.pathname === '/' ? filteredUsers : favoriteUsers)?.map((user, index) => {
           return (
             <S.User
               key={index}
@@ -99,7 +104,7 @@ const UserList = ({ users, isLoading }) => {
                   {user?.location.city} {user?.location.country}
                 </Text>
               </S.UserInfo>
-              <S.IconButtonWrapper onClick={()=>{handleFavoriteClick(user)}} isVisible={index === hoveredUserId || favoriteUsers.some(favorite=>favorite._id == user._id)}>
+              <S.IconButtonWrapper onClick={()=>{handleFavoriteClick(user)}} isVisible={index === hoveredUserId || handleFavoriteVisibility(user._id)}>
                 <IconButton>
                   <FavoriteIcon  color="error" />
                 </IconButton>

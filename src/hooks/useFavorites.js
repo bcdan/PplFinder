@@ -5,8 +5,12 @@ export const useFavorites = () => {
 
   //save favorite users on localStorage
   useEffect(()=>{
-    const localStorageData = window.localStorage.getItem("favorites");
-    favoriteUsers && setFavoriteUsers(JSON.parse(localStorageData));
+    const favoriteUsersFromLocalStorage = window.localStorage.getItem("favorites");
+    let favoriteUsersList = [];
+    if(favoriteUsersFromLocalStorage && favoriteUsers){
+      favoriteUsersList = favoriteUsersFromLocalStorage;
+    }
+    setFavoriteUsers(JSON.parse(favoriteUsersList));
   },[]);
 
   useEffect(()=>{
