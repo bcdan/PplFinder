@@ -5,18 +5,15 @@ import Tab from "@material-ui/core/Tab";
 import { Link , useLocation } from 'react-router-dom'
 
 const NavBar = () => {
-  const [value, setValue] = useState(0);
   const location = useLocation();
-
+  const [value, setValue] = useState(()=>{
+    if(location.pathname === '/')
+      return 0;
+    return 1;
+  });
   const handleChange = (_e, newValue) => {
     setValue(newValue);
   };
-
-  useEffect(()=>{
-    if(location.pathname === '/')
-      setValue(0);
-    else setValue(1);
-  },[value]);
 
   return (
     <AppBar position="static" color="transparent" style={{ position: "fixed", top: 0 }}>
