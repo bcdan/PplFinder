@@ -32,9 +32,9 @@ const UserList = ({ users, isLoading }) => {
   };
 
   useEffect(()=>{
-    //generate unique IDs for all users
-    users.forEach((user)=>user["_id"]=(new Date()).getTime().toString(36) + Math.random().toString(36).slice(2));
-    setFilteredUsers(users);
+    if(checkedBoxes.length==0){
+      setFilteredUsers(users);
+    }
   },[users]);
 
   const handleToggle = (countryValue)=>{
@@ -42,9 +42,12 @@ const UserList = ({ users, isLoading }) => {
       const newCheckedBoxes = [...checkedBoxes];
       currentIndex === -1 ? newCheckedBoxes.push(countryValue) : newCheckedBoxes.splice(currentIndex,1);
       setCheckedBoxes(newCheckedBoxes);
+      if(favoriteUsers){
+        users = [...users,...favoriteUsers];
+      }
       if(newCheckedBoxes.length == 0){
-          setFilteredUsers(users);
-          return;
+        setFilteredUsers(users);
+        return;
       }
       const filteredResult = users.filter(user=>newCheckedBoxes.some(checkBox=>getCountryTag(user.location.country) == checkBox));
       setFilteredUsers(filteredResult);
@@ -96,7 +99,7 @@ const UserList = ({ users, isLoading }) => {
       </S.Filters>
       : null
       }
-      <S.List >
+      <S.List>
         {(location.pathname === '/' ? filteredUsers : favoriteUsers)?.map((user, index) => {
           return (
             <S.User

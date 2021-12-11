@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 
 export const useFavorites = () => {
   const [favoriteUsers,setFavoriteUsers] = useState(()=>{
-    const favoriteUsersFromLocalStorage = window.localStorage.getItem("favorites");
-    let favoriteUsersList = '[]';
-    if(favoriteUsersFromLocalStorage ){
-      favoriteUsersList = favoriteUsersFromLocalStorage;
+    const localStorageUsers = window.localStorage.getItem("favorites");
+    if(localStorageUsers ){
+      return JSON.parse(localStorageUsers);
     }
-    return JSON.parse(favoriteUsersList);
+    return [];
   });
 
 

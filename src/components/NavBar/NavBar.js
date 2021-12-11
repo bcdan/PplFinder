@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -24,8 +24,8 @@ const NavBar = () => {
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab label="Home" component={Link} to='/' />
-        <Tab label="Favorites" component={Link} to='/favorites'/>
+        <Tab label="Home" component={Link} to='/'/> 
+        <Tab label="Favorites" component={Link} to='/favorites' state={{name:"dan"}}/>
       </Tabs>
     </AppBar>
   );
