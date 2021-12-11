@@ -13,6 +13,7 @@ export const usePeopleFetch = () => {
     setIsLoading(true);
     const response = await axios.get(`https://randomuser.me/api/?results=25&page=1`);
     setIsLoading(false);
+    response.data.results.forEach((user)=>user["_id"]=(new Date()).getTime().toString(36) + Math.random().toString(36).slice(2));
     setUsers(response.data.results);
   }
 
