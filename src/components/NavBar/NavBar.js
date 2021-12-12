@@ -25,7 +25,7 @@ const NavBar = () => {
         textColor="primary"
       >
         <Tab label="Home" component={Link} to='/'/> 
-        <Tab label="Favorites" component={Link} to='/favorites' state={{name:"dan"}}/>
+        <Tab label="Favorites" component={Link} to='/favorites'/>
       </Tabs>
     </AppBar>
   );
