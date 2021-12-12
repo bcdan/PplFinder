@@ -7,6 +7,14 @@ import { UsersContext } from "hooks/UsersContext";
 
 const Home = () => {
   const {users,isLoading} = useContext(UsersContext);
+
+  const getUsersWithFavorites = ()=>{
+    const localStorageUsers = window.localStorage.getItem("favorites");
+    if(localStorageUsers)
+        return [...users,...JSON.parse(localStorageUsers)];
+    return users;
+  }
+
   return (
     <S.Home>
       <S.Content>
@@ -15,7 +23,7 @@ const Home = () => {
             PplFinder
           </Text>
         </S.Header>
-        <UserList users={users} isLoading={isLoading} />
+        <UserList users={getUsersWithFavorites()} isLoading={isLoading} />
       </S.Content>
     </S.Home>
   );

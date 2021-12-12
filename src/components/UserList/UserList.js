@@ -42,9 +42,6 @@ const UserList = ({ users, isLoading }) => {
       const newCheckedBoxes = [...checkedBoxes];
       currentIndex === -1 ? newCheckedBoxes.push(countryValue) : newCheckedBoxes.splice(currentIndex,1);
       setCheckedBoxes(newCheckedBoxes);
-      if(favoriteUsers){
-        users = [...users,...favoriteUsers];
-      }
       if(newCheckedBoxes.length == 0){
         setFilteredUsers(users);
         return;
